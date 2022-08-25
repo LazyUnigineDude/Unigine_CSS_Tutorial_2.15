@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<property version="2.15.0.1" name="AnimationProperty" guid="af3ba2a2c714c1998590be24420ef3334c129ef6" parent="d99ebc8ef5769d70b1e46992309cc3e7d1aa2faa">
+	<struct name="Animations">
+		<parameter name="STATE_NAME" type="string"/>
+		<parameter name="Idle" type="file"/>
+		<parameter name="Walk" type="file"/>
+		<parameter name="Reverse_Walk" type="file"/>
+		<parameter name="Side_L_Walk" type="file"/>
+		<parameter name="Side_R_Walk" type="file"/>
+		<parameter name="Run" type="file"/>
+	</struct>
+	<parameter name="STATES" type="array" array_type="Animations">
+		<value index="0">
+			<parameter name="STATE_NAME">UNEQUIPPED</parameter>
+		</value>
+		<value index="1">
+			<parameter name="STATE_NAME">NON_AIMED</parameter>
+		</value>
+		<value index="2">
+			<parameter name="STATE_NAME">AIMED</parameter>
+		</value>
+	</parameter>
+</property>
