@@ -33,3 +33,4 @@
 /data/shader_d3d11_debug.cache
 *.bat
 *.meta
+*.mesh

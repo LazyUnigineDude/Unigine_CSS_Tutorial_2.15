@@ -46,6 +46,9 @@
 	<ItemGroup>
 		<Compile Include="data/Scripts/Controllers/ThirdPersonCamera.cs"/>
 		<Compile Include="data/Scripts/Animation/AnimationController.cs"/>
+		<Compile Include="data/Scripts/GunHandler/GunHandler.cs"/>
+		<Compile Include="data/Scripts/GunHandler/Interactor.cs"/>
+		<Compile Include="data/Scripts/GUI/HUDMaker.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="data/Scripts/Bullet_Health/Bullet.cs"/>

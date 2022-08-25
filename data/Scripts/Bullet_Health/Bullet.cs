@@ -8,11 +8,8 @@ public class Bullet : Component
 {
 	float StartTime;
 
-	[ShowInEditor]
-	float LifeTime = 2f;
-
-	[ShowInEditor]
-	int DamageAmount = 1;
+	public float LifeTime = 2f;
+	public int DamageAmount { get; set; }
 
 	Body Rigid;
 

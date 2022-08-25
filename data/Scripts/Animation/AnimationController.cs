@@ -51,6 +51,8 @@ public class AnimationController : Component
         ShooterChanger();
     }
 
+	public void ChangeStateToEquipped() { SHOOTERSTATE = SHOOTER_STATE.EQUIP; }
+
 	private void ShooterChanger() {
 		switch (SHOOTERSTATE)
 		{
