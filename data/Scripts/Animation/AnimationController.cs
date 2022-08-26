@@ -11,7 +11,6 @@ public class AnimationController : Component
 
 	float Weight;
 	ObjectMeshSkinned MainCharacter;
-	bool isWeightChanged;
 
 	enum ANIM_STATE { IDLE = 0, WALK, REVERSE_WALK, SIDE_WALK_L, SIDE_WALK_R, RUN, COUNT }
 	enum SHOOTER_STATE { NORMAL = 0, EQUIP, AIMED, COUNT }
@@ -47,7 +46,6 @@ public class AnimationController : Component
         }
 
         Weight = MathLib.Clamp(Weight + Game.IFps, 0f, 1f);
-
         ShooterChanger();
     }
 
@@ -105,6 +103,8 @@ public class AnimationController : Component
 				if (Input.IsKeyPressed(Input.KEY.W) && Input.IsKeyPressed(Input.KEY.SHIFT)) { ResetWeight(); STATE = ANIM_STATE.RUN; PREV_STATE = ANIM_STATE.IDLE; }
 				if (Input.IsKeyPressed(Input.KEY.W)) { ResetWeight(); STATE = ANIM_STATE.WALK; PREV_STATE = ANIM_STATE.IDLE; }
 				if (Input.IsKeyPressed(Input.KEY.S)) { ResetWeight(); STATE = ANIM_STATE.REVERSE_WALK; PREV_STATE = ANIM_STATE.IDLE; }
+				if (Input.IsKeyPressed(Input.KEY.A)) { ResetWeight(); STATE = ANIM_STATE.SIDE_WALK_L; PREV_STATE = ANIM_STATE.IDLE; }
+				if (Input.IsKeyPressed(Input.KEY.D)) { ResetWeight(); STATE = ANIM_STATE.SIDE_WALK_R; PREV_STATE = ANIM_STATE.IDLE; }
 				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.IDLE + SHOOTERSTATE, Weight * 2);
 				break;
 			case ANIM_STATE.WALK:
@@ -121,17 +121,19 @@ public class AnimationController : Component
 				if (Input.IsKeyUp(Input.KEY.W)) { ResetWeight(); STATE = ANIM_STATE.IDLE; PREV_STATE = ANIM_STATE.RUN; }
 				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.RUN + SHOOTERSTATE, Weight * 5);
 				break;
+			case ANIM_STATE.SIDE_WALK_L:
+				if (Input.IsKeyUp(Input.KEY.A)) { ResetWeight(); STATE = ANIM_STATE.IDLE; PREV_STATE = ANIM_STATE.SIDE_WALK_L; }
+				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.RUN + SHOOTERSTATE, Weight * 3);
+				break;
+			case ANIM_STATE.SIDE_WALK_R:
+				if (Input.IsKeyUp(Input.KEY.D)) { ResetWeight(); STATE = ANIM_STATE.IDLE; PREV_STATE = ANIM_STATE.SIDE_WALK_R; }
+				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.RUN + SHOOTERSTATE, Weight * 3);
+				break;
 			default:
 				break;
 		}
 	}
 
 
-	void ResetWeight()
-	{
-		isWeightChanged = true;
-
-		if (isWeightChanged) { Weight = 0; isWeightChanged = false; }
-	}
-
+	void ResetWeight() { Weight = 0; }
 }
