@@ -9,6 +9,7 @@ public class HealthBar : Component
 	[ShowInEditor]
 	private int Health;
 
+	public int ShowHealth() { return Health; }
 	public void DropHealth(int amount) { Health -= amount; Check(); }
 	private void Check() { if (Health <= 0) node.DeleteLater(); }
 }

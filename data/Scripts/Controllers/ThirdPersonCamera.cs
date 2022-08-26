@@ -27,6 +27,7 @@ public class ThirdPersonCamera : Component
 		
 		PREV_STATE = CAMERASTATE.Normal;
 		STATE = CAMERASTATE.Normal;
+		Invert();
 	}
 	
 	private void Update()

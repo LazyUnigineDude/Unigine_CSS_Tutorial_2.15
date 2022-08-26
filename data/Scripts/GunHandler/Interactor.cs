@@ -22,7 +22,6 @@ public class Interactor : Component
 		Unigine.Object Obj = World.GetIntersection(Camera.WorldPosition, Camera.GetWorldDirection() * 100, 0x00000002, Ray);
 		if (Obj)
 		{
-			Log.Message("{0}\n", Obj.Name);
 			Visualizer.RenderPoint3D(Ray.Point, 0.1f, vec4.RED);
 
 			if (Input.IsKeyDown(Input.KEY.E))

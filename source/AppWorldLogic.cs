@@ -14,13 +14,16 @@ namespace UnigineApp
 
 		public AppWorldLogic()
 		{
+			App.SetWidth(900);
+			App.SetHeight(600);
 		}
 
 		public override bool Init()
 		{
 			// Write here code to be called on world initialization: initialize resources for your world scene during the world start.
 			Unigine.Console.Onscreen = true;
-			Visualizer.Mode = Visualizer.MODE.ENABLED_DEPTH_TEST_ENABLED;
+			Visualizer.Mode = Visualizer.MODE.ENABLED_DEPTH_TEST_ENABLED; 
+
 			return true;
 		}
 

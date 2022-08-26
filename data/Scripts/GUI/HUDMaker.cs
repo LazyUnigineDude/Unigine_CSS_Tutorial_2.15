@@ -38,9 +38,9 @@ public class HUDMaker : Component
 		int z = Sprite.AddLayer();
 		Image _i = new(); _i.Load(_image.AbsolutePath);
 		Sprite.SetImage(_i);
-		Sprite.SetPosition((Width / 2) - 25, (Height / 2) - 25);
 		Sprite.Width = 50;
 		Sprite.Height = 50;
+		Sprite.SetPosition((Width / 2) - 25, (Height / 2) - 25);
 
 		//GUI.AddChild(Canvas, Gui.ALIGN_EXPAND);
 		GUI.AddChild(Sprite, Gui.ALIGN_EXPAND | Gui.ALIGN_OVERLAP);
