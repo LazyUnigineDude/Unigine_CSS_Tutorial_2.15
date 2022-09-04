@@ -3,11 +3,15 @@ using Unigine;
 [Component(PropertyGuid = "8c0197dccf81518b4310796e1064f1f5eae3dad0")]
 public class GunHandler : Component
 {
+    public Node HUD;
+
 	Unigine.Object Gun;
 	bool isHolding = false;
     AssetLinkNode BulletPrefab;
-    int damage; 
+    int damage, CurrentBullets, AmountPerShell, AmountInGun = 0; 
     float RoFTime, rateoffire;
+
+    HUDMaker GunHUD;
 
 	private void Update()
 	{
@@ -22,6 +26,11 @@ public class GunHandler : Component
                     Shoot(Game.Player.WorldPosition + (Game.Player.GetWorldDirection() * 100));
                 }
             }
+
+            if (Input.IsKeyDown(Input.KEY.R))
+            {
+                Reload();
+            }
         }
 	}
 
@@ -32,10 +41,17 @@ public class GunHandler : Component
         BulletPrefab = new AssetLinkNode(Gun.GetProperty(0).GetParameterPtr(0).ValueFile);
         damage = Gun.GetProperty(0).GetParameterPtr(1).ValueInt;
         rateoffire = Gun.GetProperty(0).GetParameterPtr(2).ValueFloat;
+        CurrentBullets = Gun.GetProperty(0).GetParameterPtr(3).ValueInt;
+        AmountPerShell = Gun.GetProperty(0).GetParameterPtr(4).ValueInt;
+
+        GunHUD = GetComponent<HUDMaker>(HUD);
+        Reload();
     }
 
     void Shoot(vec3 Lookat)
     {
+        if (AmountInGun == 0) { Reload(); }
+        else if (AmountInGun > 0) { 
         Node _bullet = BulletPrefab.Load();
         _bullet.WorldPosition = Gun.GetChild(0).WorldPosition;
         _bullet.WorldLookAt(Lookat);
@@ -44,6 +60,31 @@ public class GunHandler : Component
         x.DamageAmount = damage;
 
         _bullet.ObjectBodyRigid.AddLinearImpulse(_bullet.GetWorldDirection(MathLib.AXIS.Y) * 100);
+            AmountInGun--;
+            GunHUD.UpdateGun(AmountInGun, CurrentBullets);
+        }
+    }
+
+    void Reload() {
+
+        int reload = AmountPerShell - AmountInGun;
+
+        if (CurrentBullets == 0)
+        {
+            Log.Message("Empty\n");
+        }
+        else if (CurrentBullets > reload)
+        {
+            CurrentBullets -= reload;
+            AmountInGun += reload;
+        }
+        else if (CurrentBullets < reload)
+        {
+            AmountInGun += CurrentBullets;
+            CurrentBullets = 0;
+        }
+
+        GunHUD.UpdateGun(AmountInGun, CurrentBullets);
     }
     //void ShootRayCast()
     //{

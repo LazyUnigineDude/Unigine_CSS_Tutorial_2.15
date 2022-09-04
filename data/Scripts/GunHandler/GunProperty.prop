@@ -3,4 +3,6 @@
 	<parameter name="BulletPrefab" type="file"/>
 	<parameter name="BulletDamage">0</parameter>
 	<parameter name="RateofFire" type="float"/>
+	<parameter name="Current_Bullets"/>
+	<parameter name="Amount_per_shell"/>
 </property>

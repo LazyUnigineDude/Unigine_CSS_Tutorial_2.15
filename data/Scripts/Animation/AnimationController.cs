@@ -123,11 +123,11 @@ public class AnimationController : Component
 				break;
 			case ANIM_STATE.SIDE_WALK_L:
 				if (Input.IsKeyUp(Input.KEY.A)) { ResetWeight(); STATE = ANIM_STATE.IDLE; PREV_STATE = ANIM_STATE.SIDE_WALK_L; }
-				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.RUN + SHOOTERSTATE, Weight * 3);
+				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.SIDE_WALK_L + SHOOTERSTATE, Weight * 3);
 				break;
 			case ANIM_STATE.SIDE_WALK_R:
 				if (Input.IsKeyUp(Input.KEY.D)) { ResetWeight(); STATE = ANIM_STATE.IDLE; PREV_STATE = ANIM_STATE.SIDE_WALK_R; }
-				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.RUN + SHOOTERSTATE, Weight * 3);
+				MainCharacter.LerpLayer((int)ANIM_STATE.IDLE, (int)PREV_STATE + SHOOTERSTATE, (int)ANIM_STATE.SIDE_WALK_R + SHOOTERSTATE, Weight * 3);
 				break;
 			default:
 				break;

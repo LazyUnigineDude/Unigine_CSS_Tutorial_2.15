@@ -10,13 +10,13 @@ public class HUDMaker : Component
 	Gui GUI;
 	WidgetCanvas Canvas;
 	WidgetSprite Sprite;
+	WidgetLabel CurrentAmount, MaxAmount;
+	int Width = App.GetWidth(), Height = App.GetHeight();
 
 	private void Init()
 	{
 		// write here code to be called on component initialization
 		GUI = Gui.Get();
-
-		int Width = App.GetWidth(), Height = App.GetHeight();
 
 		Canvas = new();
 
@@ -42,8 +42,13 @@ public class HUDMaker : Component
 		Sprite.Height = 50;
 		Sprite.SetPosition((Width / 2) - 25, (Height / 2) - 25);
 
+		CurrentAmount = new(); MaxAmount = new();
+
 		//GUI.AddChild(Canvas, Gui.ALIGN_EXPAND);
 		GUI.AddChild(Sprite, Gui.ALIGN_EXPAND | Gui.ALIGN_OVERLAP);
+
+		GUI.AddChild(CurrentAmount, Gui.ALIGN_EXPAND | Gui.ALIGN_OVERLAP);
+		GUI.AddChild(MaxAmount, Gui.ALIGN_EXPAND | Gui.ALIGN_OVERLAP);
 	}
 
 	private void Update()
@@ -52,4 +57,17 @@ public class HUDMaker : Component
 
 		GUI = Gui.Get();
 	}
+
+	public void UpdateGun(int CAmount, int MAmount) {
+
+		CurrentAmount.Text = CAmount.ToString();
+		CurrentAmount.FontSize = 48;
+		CurrentAmount.SetPosition(Width - 160, 20);
+
+
+		MaxAmount.Text = MAmount.ToString();
+		MaxAmount.FontSize = 36;
+		MaxAmount.SetPosition(Width - 80, 20);
+	}
+
 }
