@@ -87,7 +87,6 @@ public class ThirdPersonCamera : Component
 		RotationSpeedH = MathLib.Lerp(PREV_STATE.GetChild(2).ValueFloat, STATE.GetChild(2).ValueFloat, Weight);
 		RotationSpeedV = MathLib.Lerp(PREV_STATE.GetChild(3).ValueFloat, STATE.GetChild(3).ValueFloat, Weight);
 		HeightOffset = MathLib.Lerp(PREV_STATE.GetChild(4).ValueFloat, STATE.GetChild(4).ValueFloat, Weight);
-		HeightConstraints.x = MathLib.Lerp(PREV_STATE.GetChild(5).ValueVec2.x, STATE.GetChild(5).ValueVec2.x, Weight);
-		HeightConstraints.y = MathLib.Lerp(PREV_STATE.GetChild(5).ValueVec2.y, STATE.GetChild(5).ValueVec2.y, Weight);
+		HeightConstraints = MathLib.Lerp(PREV_STATE.GetChild(5).ValueVec2, STATE.GetChild(5).ValueVec2, Weight);
 	}
 }
