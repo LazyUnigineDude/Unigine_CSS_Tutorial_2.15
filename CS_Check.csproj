@@ -49,6 +49,7 @@
 		<Compile Include="data/Scripts/GunHandler/GunHandler.cs"/>
 		<Compile Include="data/Scripts/GunHandler/Interactor.cs"/>
 		<Compile Include="data/Scripts/GUI/HUDMaker.cs"/>
+		<Compile Include="data/Scripts/AI/ShooterAI.cs"/>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="data/Scripts/Bullet_Health/Bullet.cs"/>
