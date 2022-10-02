@@ -8,16 +8,19 @@ public class ShooterAI : Component
 {
 	public Node PathMakerNode;
 	public Node MainCharacter;
-	private float ViewDistance, Weight, DistanceRatio;
+	private float ViewDistance, Weight, DistanceRatio, CurrentTime;
 
 	BoundFrustum BF;
 	bool isInsideFrustum = false;
 
-	enum AISTATE { IDLE, ALERT, SEARCH, AGGRESSIVE}
+	enum AISTATE { IDLE, ALERT, SEARCH, AGGRESSIVE, SHOOT}
 	AISTATE STATE;
 	quat HorReset = new quat(90, 0, 0);
 	PathMaker Path;
 	mat4 View;
+	HealthBar Health;
+	int CurrentHealth;
+
 	private void Init()
 	{
 		// write here code to be called on component initialization
@@ -29,6 +32,9 @@ public class ShooterAI : Component
 		BF = new();
 		View = new();
 		Path.InitPath();
+
+		Health = node.GetComponent<HealthBar>();
+		CurrentHealth = Health.ShowHealth();
 	}
 	
 	private void Update()
@@ -57,15 +63,17 @@ public class ShooterAI : Component
 
 	void AiSTATE() {
 
+		if (CurrentHealth != Health.ShowHealth()) { Weight = 1; STATE = AISTATE.AGGRESSIVE; CurrentHealth = Health.ShowHealth(); }
+
 		switch (STATE)
 		{
 			case AISTATE.IDLE:
-				Log.Message("IDLE\n");
+				//Log.Message("IDLE\n");
 				Weight = MathLib.Clamp(Weight -= Game.IFps, 0f, 1f);
 				if (isInsideFrustum) STATE = AISTATE.ALERT;
                 if (MathLib.Distance(node.WorldPosition, Path.GetCurrentPathPosition()) > 0.1f)
                 {
-					MoveTowards(Path.GetCurrentPathPosition(), node);
+					MoveTowards(Path.GetCurrentPathPosition(), node, 1);
 					RotateTowards(Path.GetCurrentPathPosition(), node, 0.05f);
                 }
                 else
@@ -75,7 +83,7 @@ public class ShooterAI : Component
                 }
 				break;
 			case AISTATE.ALERT:
-				Log.Message("ALRT\n");
+				//Log.Message("ALRT\n");
 				Weight = MathLib.Clamp(Weight += Game.IFps / DistanceRatio, 0f, 1f);
 				if (!isInsideFrustum) STATE = AISTATE.IDLE;
 				if (Weight == 1f) STATE = AISTATE.AGGRESSIVE;
@@ -83,22 +91,30 @@ public class ShooterAI : Component
 					RotateTowards(MainCharacter.WorldPosition, node, 0.005f);
 				break;
 			case AISTATE.SEARCH:
-				Log.Message("SRCH\n");
+				//Log.Message("SRCH\n");
 				Weight = MathLib.Clamp(Weight -= Game.IFps / 5, 0f, 1f);
 				if (Weight == 0f) STATE = AISTATE.IDLE;
 				if (isInsideFrustum) { STATE = AISTATE.AGGRESSIVE; Weight = 1; }
-					RotateTowards(MainCharacter.WorldPosition, node, 0.05f);
+				MoveTowards(MainCharacter.WorldPosition, node, 3);
+				RotateTowards(MainCharacter.WorldPosition, node, 0.05f);
 				break;
             case AISTATE.AGGRESSIVE:
-				Log.Message("AGRO\n");
+				//Log.Message("AGRO\n");
 				if (!isInsideFrustum) STATE = AISTATE.SEARCH;
-					MoveTowards(MainCharacter.WorldPosition, node);
+					MoveTowards(MainCharacter.WorldPosition, node, 5);
 					RotateTowards(MainCharacter.WorldPosition, node, 0.05f);
+				if (MathLib.Distance(node.WorldPosition, MainCharacter.WorldPosition) < 10.0f) { STATE = AISTATE.SHOOT; CurrentTime = Game.Time; }
+				break;
+			case AISTATE.SHOOT:
+                if (CurrentTime + 1 < Game.Time) { Shoot(); STATE = AISTATE.AGGRESSIVE; }
+					RotateTowards(MainCharacter.WorldPosition, node, 0.01f);
 				break;
             default:
                 break;
         }
     }
+
+	void Shoot() { Log.Message("BAM!\n"); }
 
 	void RotateTowards(vec3 TowardsObject, Node Obj2Move, float Speed) {
 
@@ -108,11 +124,11 @@ public class ShooterAI : Component
 		Obj2Move.Rotate(-Obj2Move.GetWorldRotation().x, -Obj2Move.GetWorldRotation().y, Angle * Speed);
 	}
 
-	void MoveTowards(vec3 TowardsObject, Node Obj2Move) {
+	void MoveTowards(vec3 TowardsObject, Node Obj2Move, int Speed) {
 
 		vec3 Pos = MathLib.Lerp(Obj2Move.WorldPosition,
 								TowardsObject,
-								Game.IFps / MathLib.Distance(Obj2Move.WorldPosition,
+								Game.IFps * Speed / MathLib.Distance(Obj2Move.WorldPosition,
 															TowardsObject));
 		Obj2Move.WorldPosition = Pos;
 	}
