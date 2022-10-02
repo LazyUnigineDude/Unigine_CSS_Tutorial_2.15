@@ -74,8 +74,8 @@ public class ThirdPersonCamera : Component
 
         switch (STATE)
         {
-            case CAMERASTATE.Normal: LerpValues(Aiming, Normal); break;
-            case CAMERASTATE.Aiming: LerpValues(Normal, Aiming); break;
+            case CAMERASTATE.Normal: if (Weight != 1) LerpValues(Aiming, Normal); break;
+            case CAMERASTATE.Aiming: if (Weight != 1) LerpValues(Normal, Aiming); break;
 			default:  break;
         }
     }
