@@ -9,6 +9,7 @@ public class ShooterAI : Component
 	public Node PathMakerNode;
 	public Node MainCharacter;
 	private float ViewDistance, Weight, DistanceRatio, CurrentTime;
+	public AssetLinkNode BulletPrefab;
 
 	BoundFrustum BF;
 	bool isInsideFrustum = false;
@@ -25,7 +26,7 @@ public class ShooterAI : Component
 	{
 		// write here code to be called on component initialization
 
-		ViewDistance = 15;
+		ViewDistance = 30;
 		Weight = 0;
 		STATE = AISTATE.IDLE;
 		Path = GetComponent<PathMaker>(PathMakerNode);
@@ -103,7 +104,7 @@ public class ShooterAI : Component
 				if (!isInsideFrustum) STATE = AISTATE.SEARCH;
 					MoveTowards(MainCharacter.WorldPosition, node, 5);
 					RotateTowards(MainCharacter.WorldPosition, node, 0.05f);
-				if (MathLib.Distance(node.WorldPosition, MainCharacter.WorldPosition) < 10.0f) { STATE = AISTATE.SHOOT; CurrentTime = Game.Time; }
+				if (MathLib.Distance(node.WorldPosition, MainCharacter.WorldPosition) < 20.0f) { STATE = AISTATE.SHOOT; CurrentTime = Game.Time; }
 				break;
 			case AISTATE.SHOOT:
                 if (CurrentTime + 1 < Game.Time) { Shoot(); STATE = AISTATE.AGGRESSIVE; }
@@ -114,7 +115,17 @@ public class ShooterAI : Component
         }
     }
 
-	void Shoot() { Log.Message("BAM!\n"); }
+	void Shoot() {
+
+		Node _bullet = BulletPrefab.Load();
+		_bullet.WorldPosition = node.GetChild(0).WorldPosition;
+		_bullet.WorldLookAt(node.GetChild(0).WorldPosition + node.GetChild(0).GetWorldDirection(MathLib.AXIS.Y));
+
+		Bullet x = GetComponent<Bullet>(_bullet);
+		x.DamageAmount = 1;
+
+		_bullet.ObjectBodyRigid.AddLinearImpulse(_bullet.GetWorldDirection(MathLib.AXIS.Y) * 50);
+	}
 
 	void RotateTowards(vec3 TowardsObject, Node Obj2Move, float Speed) {
 
