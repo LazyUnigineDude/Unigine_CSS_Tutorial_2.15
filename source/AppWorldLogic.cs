@@ -14,8 +14,8 @@ namespace UnigineApp
 
 		public AppWorldLogic()
 		{
-			App.SetWidth(900);
-			App.SetHeight(600);
+			App.SetWidth(1600);
+			App.SetHeight(900);
 		}
 
 		public override bool Init()

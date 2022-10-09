@@ -9,7 +9,7 @@ public class ThirdPersonCamera : Component
 	PropertyParameter Normal, Aiming;
 	public Property ThirdPersonCameraProperty;
 	public float SpeedOfChange = 5;
-	public bool isAiming, InvertHorizontal, InvertVertical;
+	public bool isAiming = false, InvertHorizontal, InvertVertical;
 
 	float Angle = 0, CamRadius = 0, Radius = 0, Height = 0, HeightOffset = 0, RotationSpeedH = 0, RotationSpeedV = 0, Weight = 0;
 	vec2 HeightConstraints = new();
